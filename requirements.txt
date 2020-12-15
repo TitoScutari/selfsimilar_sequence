@@ -1,2 +1,4 @@
 matplotlib
 jupyterlab
+numpy==1.19.3
+wave

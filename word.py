@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import random
 import wave
 import struct
@@ -8,13 +7,12 @@ class Word:
     init = []
     sequence = []
     lvl = 0
-    species = "none"
 
     def __init__(self, seq):
         self.init = seq
         self.sequence = seq
 
-   
+#set_level(int) should be much better than step 
 class Add_Word(Word):
 
     def step(self):
@@ -46,6 +44,7 @@ def summation(array):
     for i in range(len(array)):
         a.append(sum(array[:i]))
     return a
+# some kind of inverse of summation is probably a good idea, like a highpass filter
 
 def soften(array, amount):
     a = []
@@ -63,42 +62,57 @@ def soften(array, amount):
 def normalize(array):
     a = []
     m = max(array)
+    if m < abs(min(array)):
+        m = abs(min(array))
     for x in array:
         a.append(x/m)
     return a
 
+def octdown(array):
+    a = []
+    for x in array:
+        a.append(x)
+        a.append(x)
+    return a
+
+def zero_sum_factor(array):
+    return -1*sum(array)
+
+def automation_write(filename, length, array, type):
+    filename += ".ReaperAutoItem"
+    f = open(filename, "w")
+    f.write("SRCLEN "+ str(length*2) + "\n")
+
+    space = round(2*length/len(array), 5)
+    i = 0
+    for x in array:
+        f.write("PPT "+ str(i) + " "+ str(x)+" " +str(type)+" 0\n")
+        i+= space
+    
+    f.close()
+
+def scramble(array):
+    a = list(array)
+    for i in range(len(array)-1):
+        bi = random.randint(i+1, len(a)-1)
+        b = a[bi]
+        a[bi]=a[i]
+        a[i]=b
+    return a
+
+
 def wav_write(array, name):
-    sound = wave.open(name, 'wb')
+    sound = wave.open(name, 'w')
 
     sound.setnchannels(1)
     sound.setsampwidth(2)
     sound.setframerate(48000)
 
-    BinStr = bytes()
-    for i in array:
-        BinStr = BinStr + struct.pack('h',round(i*20000))
+    arr = []
+    for x in array:
+        arr.append(int(round(x*32000)))
+
+    BinStr = struct.pack( str(len(array))+'h', *arr)
 
     sound.writeframes(BinStr)
     sound.close()
-
-
-x = []
-for i in range(4):
-    x.append(random.random()*2)
-
-a = Mult_Word(x)
-for i in range(8):
-    a.step()
-
-print(x)
-
-w = normalize(a.sequence)
-rounded = normalize(soften(w, 4))
-
-wav_write(w, "sharp.wav")
-wav_write(rounded, "rounded.wav")
-
-
-plt.plot(range(len(w)), w)
-#plt.plot(range(len(rounded)), rounded)
-plt.show()
