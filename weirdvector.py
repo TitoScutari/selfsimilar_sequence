@@ -56,3 +56,12 @@ def random_ones(length, onesnumber):
             a[i]=1
             onesnumber-=1
     return a
+
+def scramble(array):
+    a = list(array)
+    for i in range(len(array)-1):
+        bi = rnd.randint(i+1, len(a)-1)
+        b = a[bi]
+        a[bi]=a[i]
+        a[i]=b
+    return a

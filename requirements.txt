@@ -1,4 +1,6 @@
 matplotlib
 jupyterlab
 numpy==1.19.3
+svgwrite
+svgpathtools
 wave
