@@ -2,6 +2,8 @@ import random
 import wave
 import struct
 
+# this one is probably useless
+
 class Word:
 
     init = []

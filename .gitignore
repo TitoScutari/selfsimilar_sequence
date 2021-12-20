@@ -1,3 +1,10 @@
 *.wav
 *.ReaperAutoItem
-venv/**
+*.cfg
+*.pyc
+*.d
+
+.ipynb_checkpoints/**
+Lib/**
+Scripts/**
+share/**
