@@ -1,6 +1,8 @@
 import numpy as np
 import random as rnd
 
+
+# fractal = np.add.outer(seed, seed)
 def fractalize_add(array, shape):
     a = []
     for j in array:
@@ -8,6 +10,7 @@ def fractalize_add(array, shape):
             a.append(j+i)    
     return a
 
+# fractal = np.outer(seed, seed)
 def fractalize_mult(array, shape):
     a = []
     for j in array:
@@ -15,6 +18,7 @@ def fractalize_mult(array, shape):
             a.append(j*i)    
     return a
 
+#weird scipy stuff needed here
 def soften(array, amount):
     a = []
     amount = amount*2
@@ -28,12 +32,14 @@ def soften(array, amount):
         a.append(sum(array[start:end])/amount)
     return a
 
+# a/max(abs(a))
 def normalize(array):
     m = max(array)
     if m < abs(min(array)):
         m = abs(min(array))
     return [a/m for a in array]
 
+# np.outer(a, [1,1]).reshape(-1)
 def octdown(array):
     a = []
     for x in array:
